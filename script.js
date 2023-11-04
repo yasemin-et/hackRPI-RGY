@@ -3,10 +3,16 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 
-const name = prompt('What is your name?')
+// wait until we get a proper name from the user, then join
+var name = prompt('What is your name?')
+while (name == "null") {
+    name = prompt('What is your name?')
+    console.log("in here")
+}
 appendMessage('You joined')
 socket.emit('new-user', name)
 
+// check for errors
 socket.on('error', (error) => {
     console.error('Socket.IO error:', error);
 });
