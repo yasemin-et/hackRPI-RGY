@@ -6,16 +6,26 @@ const socketIO = require('socket.io');
 const server = http.createServer(app);
 const io = socketIO(server);
 
+const users = {}
+
 app.use(express.static(__dirname)); // Serve static files from the current directory
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html'); // Send your HTML file as a response
+io.on('connection', socket => {
+    socket.on('new-user', name => {
+        users[socket.id] = name;
+        socket.broadcast.emit('user-connected', name);
+    });
+
+    socket.on('send-chat-message', message => {
+        socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] } ); // sends the message to all other users
+    });
+
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('user-disconnected', users[socket.id])
+        delete users[socket.id]
+    });
 });
 
-io.on('connection', socket => {
-    console.log('new User');
-    socket.emit('chat-message', 'Hello World');
-});
 
 server.listen(3000, '0.0.0.0', () => {
     console.log('Server is running on http://0.0.0.0:3000');
