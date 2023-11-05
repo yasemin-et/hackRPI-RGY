@@ -22,19 +22,23 @@ socket.on('chat-message', data => {
 })
 
 socket.on('user-connected', name => {
-    appendMessage(`${name} connected`);
+    appendMessage(`${name} connected to the chat`);
 });
 
 socket.on('user-disconnected', name => {
-    appendMessage(`${name} disconnected`);
+    appendMessage(`${name} disconnected from the chat`);
 });
 
 messageForm.addEventListener('submit', e => {
-    e.preventDefault() // stop page from posting to server
+    e.preventDefault() // stop page from reloading
+
+    // find and display the message
     const message = messageInput.value
     appendMessage(`You: ${message}`) 
     socket.emit('send-chat-message', message)
     messageInput.value = '' 
+
+    // award points if successfully solved the question
 })
 
 function appendMessage(message) {
