@@ -9,8 +9,10 @@ const io = socketIO(server);
 const users = {}
 
 // keep track of the current question and answer
-var question
-var answer
+const questions = {}
+const answers = {}
+var current_qa
+
 generateQuestion()
 
 app.use(express.static(__dirname)); // Serve static files from the current directory
