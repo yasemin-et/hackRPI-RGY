@@ -48,16 +48,16 @@ socket.on('no-more-questions', message => {
 
 
 socket.on('chat-message', data => {
-    appendMessage(`${data.name}: ${data.message}`) 
+    appendMessage(`${data.name}: ${data.message}`, data.name) 
 
 })
 
 socket.on('user-connected', name => {
-    appendMessage(`${name} connected to the chat`);
+    appendMessage(`${name} connected to the chat`, data.name);
 });
 
 socket.on('user-disconnected', name => {
-    appendMessage(`${name} disconnected`);
+    appendMessage(`${name} disconnected`, data.name);
 });
 
 socket.on('leaderboard-update', leaderboard => {
@@ -82,8 +82,6 @@ messageForm.addEventListener('submit', e => {
     appendMessage(`You: ${message}`) 
     socket.emit('send-chat-message', message)
     messageInput.value = '' 
-
-    // award points if successfully solved the question
 })
 
 function appendMessage(message, sender, className) {
@@ -98,14 +96,13 @@ function appendMessage(message, sender, className) {
     // Set the background color of the message element
     if (className) {
         messageElement.classList.add(className);
+        console.log("1")
     } else {
+        console.log("2")
+        console.log(sender)
         messageElement.style.backgroundColor = userColors[sender];
     }
 
     messageContainer.append(messageElement);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 }
-
-
-socket.on('chat-message', data => {
-    appendMessage(`${data.name}: ${data.message}`, data.name);
-});
