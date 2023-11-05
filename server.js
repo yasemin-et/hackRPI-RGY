@@ -8,6 +8,13 @@ const io = socketIO(server);
 
 const users = {}
 
+// keep track of the current question and answer
+const questions = {}
+const answers = {}
+var current_qa
+
+generateQuestion()
+
 app.use(express.static(__dirname)); // Serve static files from the current directory
 
 io.on('connection', socket => {
@@ -30,3 +37,8 @@ io.on('connection', socket => {
 server.listen(3000, '0.0.0.0', () => {
     console.log('Server is running on http://0.0.0.0:3000');
 });
+
+
+function generateQuestion() {
+
+}
