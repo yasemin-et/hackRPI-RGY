@@ -44,7 +44,7 @@ io.on('connection', socket => {
         if (!currentQuestion || questionAnswered) {
             generateNewQuestion();
         }
-        socket.emit('room-question', currentQuestion.question); // Send only to the new user
+        socket.emit('room-question', currentQuestion.question);
         socket.broadcast.emit('user-connected', name);
 
         // Emit the updated leaderboard to the new user

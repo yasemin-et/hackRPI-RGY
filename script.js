@@ -3,6 +3,10 @@ const socket = io('http://localhost:3000');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container'); 
 const messageInput = document.getElementById('message-input');
+const colors = ['#ffbdee', '#bdc9ff', '#fff6bd', '#ceffbd', '#bdf4ff', '#ffbdbd', '#BDB2FF', '#FFC6FF', '#FFFFFC'];
+const userColors = {};
+
+
 
 // wait until we get a proper name from the user, then join
 var name = prompt('What is your name?')
@@ -19,8 +23,9 @@ socket.on('error', (error) => {
 });
 
 socket.on('correct-answer', data => {
-    appendMessage(`${data.name} answered correctly and now has ${data.points} points!`);
+    appendMessage(`${data.name} answered correctly and now has ${data.points} points!`, data.name, 'correct-answer');
 });
+
 
 socket.on('room-question', question => {
     const questionElement = document.getElementById('question');
@@ -81,8 +86,26 @@ messageForm.addEventListener('submit', e => {
     // award points if successfully solved the question
 })
 
-function appendMessage(message) {
-    const messageElement = document.createElement('div')
-    messageElement.innerText = message
-    messageContainer.append(messageElement)
+function appendMessage(message, sender, className) {
+    const messageElement = document.createElement('div');
+    messageElement.innerText = message;
+
+    // Assign a unique color to the sender if not already assigned
+    if (!userColors[sender]) {
+        userColors[sender] = colors[Object.keys(userColors).length % colors.length];
+    }
+
+    // Set the background color of the message element
+    if (className) {
+        messageElement.classList.add(className);
+    } else {
+        messageElement.style.backgroundColor = userColors[sender];
+    }
+
+    messageContainer.append(messageElement);
 }
+
+
+socket.on('chat-message', data => {
+    appendMessage(`${data.name}: ${data.message}`, data.name);
+});
