@@ -43,15 +43,10 @@ body {
     overflow-y: auto;
     border: 1px solid black; 
 }
-
     #message-container div {
-        background-color: #CCC;
         padding: 5px;
+        border: 1px solid black;
     }
-
-        #message-container div:nth-child(2n) {
-            background-color: #FFF;
-        }
 
 #send-container {
     position: fixed;
@@ -82,4 +77,8 @@ body {
 
 #entry-container {
 
+}
+
+.correct-answer {
+    background-color: #d9d9db;
 }
