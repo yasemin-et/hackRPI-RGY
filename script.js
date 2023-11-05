@@ -9,7 +9,7 @@ while (name == "null") {
     name = prompt('What is your name?')
     console.log("in here")
 }
-appendMessage('You joined')
+appendMessage('You joined the chat')
 socket.emit('new-user', name)
 
 // check for errors
@@ -41,4 +41,5 @@ function appendMessage(message) {
     const messageElement = document.createElement('div')
     messageElement.innerText = message
     messageContainer.append(messageElement)
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 }
